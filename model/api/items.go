@@ -2,6 +2,7 @@ package api
 
 // CreateItemRequestJSON 備品の追加(リクエスト)
 type CreateItemRequestJSON struct {
+	ID          string `json:"ID"`
 	Type        int    `json:"type"`
 	Code        string `json:"code"`
 	Name        string `json:"name"`
