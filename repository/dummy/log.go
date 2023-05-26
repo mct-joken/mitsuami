@@ -9,12 +9,12 @@ type LogRepository struct {
 	data []domain.Log
 }
 
-func (l LogRepository) CreateLog(log domain.Log) error {
+func (l *LogRepository) CreateLog(log domain.Log) error {
 	l.data = append(l.data, log)
 	return nil
 }
 
-func (l LogRepository) GetLogByID(id string) *domain.Log {
+func (l *LogRepository) GetLogByID(id string) *domain.Log {
 	for _, v := range l.data {
 		if v.GetID() == id {
 			return &v
@@ -23,7 +23,7 @@ func (l LogRepository) GetLogByID(id string) *domain.Log {
 	return nil
 }
 
-func (l LogRepository) GetLogByIDs(itemID, userID string) []domain.Log {
+func (l *LogRepository) GetLogByIDs(itemID, userID string) []domain.Log {
 	res := make([]domain.Log, 0)
 	for _, v := range l.data {
 		if v.GetItemID() == itemID && v.GetUserID() == userID {
@@ -34,7 +34,7 @@ func (l LogRepository) GetLogByIDs(itemID, userID string) []domain.Log {
 	return res
 }
 
-func (l LogRepository) GetLogByItemID(id string) []domain.Log {
+func (l *LogRepository) GetLogByItemID(id string) []domain.Log {
 	res := make([]domain.Log, 0)
 	for _, v := range l.data {
 		if v.GetItemID() == id {
@@ -44,10 +44,10 @@ func (l LogRepository) GetLogByItemID(id string) []domain.Log {
 	return res
 }
 
-func (l LogRepository) UpdateLog(log domain.Log) error {
-	for _, v := range l.data {
-		if v == log {
-			v = log
+func (l *LogRepository) UpdateLog(log domain.Log) error {
+	for i, v := range l.data {
+		if v.GetID() == log.GetID() {
+			l.data[i] = log
 			return nil
 		}
 	}

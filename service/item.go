@@ -50,6 +50,15 @@ func (s *ItemService) StartUsing(itemID, userID string) error {
 	// ToDo: IDの生成方法を決める
 	// そもそもいらないかも
 	d := domain.NewLog("", userID, itemID, time.Now())
+
+	l := s.logRepository.GetLogByIDs(itemID, userID)
+	for _, v := range l {
+		// 貸出中であるものを探す
+		if v.GetStatus() == 0 {
+			return errors.New("unavailable")
+		}
+	}
+
 	if err := s.logRepository.CreateLog(*d); err != nil {
 		return err
 	}
@@ -59,7 +68,6 @@ func (s *ItemService) StartUsing(itemID, userID string) error {
 // EndUsing 備品の使用を終了(返却)
 func (s *ItemService) EndUsing(itemID, userID string) error {
 	logs := s.logRepository.GetLogByIDs(itemID, userID)
-
 	log := (*domain.Log)(nil)
 	for _, v := range logs {
 		// 貸出中: 0, 返却済み: 1
