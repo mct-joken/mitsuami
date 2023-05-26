@@ -12,9 +12,10 @@ type ItemService struct {
 	logRepository repository.LogRepository
 }
 
-func NewItemService(r repository.ItemRepository) *ItemService {
+func NewItemService(r repository.ItemRepository, l repository.LogRepository) *ItemService {
 	return &ItemService{
-		repository: r,
+		repository:    r,
+		logRepository: l,
 	}
 }
 
