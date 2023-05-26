@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"errors"
+	"fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/mct-joken/mitsuami/model/api"
 	"github.com/mct-joken/mitsuami/repository"
@@ -115,7 +117,11 @@ func (c *ItemController) GetItemByID(e echo.Context) error {
 func (c *ItemController) StartUsing(e echo.Context) error {
 	// ToDo: ユーザーIDを入れる
 	if err := c.itemService.StartUsing(e.Param("id"), ""); err != nil {
-		return e.JSON(http.StatusBadRequest, api.StartUsingItemResponseJSON{Status: "failed"})
+		message := "failed"
+		if err == errors.New("not found") {
+			message = "not found"
+		}
+		return e.JSON(http.StatusBadRequest, api.StartUsingItemResponseJSON{Status: message})
 	}
 	return e.JSON(http.StatusOK, api.StartUsingItemResponseJSON{Status: "ok"})
 }
@@ -123,7 +129,12 @@ func (c *ItemController) StartUsing(e echo.Context) error {
 func (c *ItemController) EndUsing(e echo.Context) error {
 	// ToDo: ユーザーIDを入れる
 	if err := c.itemService.EndUsing(e.Param("id"), ""); err != nil {
-		return e.JSON(http.StatusBadRequest, api.EndUsingItemResponseJSON{Status: "failed"})
+		message := "failed"
+		if err == errors.New("not found") {
+			message = "not found"
+		}
+		fmt.Println(err)
+		return e.JSON(http.StatusBadRequest, api.EndUsingItemResponseJSON{Status: message})
 	}
 	return e.JSON(http.StatusOK, api.EndUsingItemResponseJSON{Status: "ok"})
 }

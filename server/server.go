@@ -25,8 +25,8 @@ func Start() {
 			items.POST("/", itemController.CreateItem)
 
 			items.GET("/:id", itemController.GetItemByID)
-			items.POST("/:id", itemController.StartUsing)
-			items.DELETE("/:id", itemController.EndUsing)
+			items.POST("/:id/using", itemController.StartUsing)
+			items.DELETE("/:id/using", itemController.EndUsing)
 		}
 	}
 	if err := e.Start(":3000"); err != nil {
