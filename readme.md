@@ -1,4 +1,3 @@
-# Qb
+# Mitsuami
+
 equipment & book management tool
-
-
